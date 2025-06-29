@@ -188,7 +188,7 @@ namespace WireSockUI.Forms
             // 
             // tabPageTunnels
             // 
-            this.tabPageTunnels.BackColor = System.Drawing.Color.Transparent;
+            this.tabPageTunnels.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.tabPageTunnels.Controls.Add(this.btnEdit);
             this.tabPageTunnels.Controls.Add(this.pnlLeft);
             this.tabPageTunnels.Controls.Add(this.pnlRight);
@@ -210,7 +210,9 @@ namespace WireSockUI.Forms
             this.btnEdit.Size = new System.Drawing.Size(64, 22);
             this.btnEdit.TabIndex = 16;
             this.btnEdit.Text = "Edit";
-            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.UseVisualStyleBackColor = false;
+            this.btnEdit.FlatStyle = FlatStyle.Flat;
+            this.btnEdit.FlatAppearance.BorderSize = 0;
             this.btnEdit.Click += new System.EventHandler(this.OnEditProfileClick);
             // 
             // pnlLeft

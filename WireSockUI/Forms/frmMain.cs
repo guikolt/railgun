@@ -651,10 +651,7 @@ namespace WireSockUI.Forms
 
                     AddRow(layoutInterface, "Status", Resources.InterfaceStatus, Resources.InterfaceStatusInactive,
                         false, BitmapExtensions.DrawCircle(16, 15, Brushes.DarkGray));
-                    AddRow(layoutInterface, "PrivateKey", Resources.InterfacePublicKey, profile.PublicKey);
-                    AddRow(layoutInterface, "MTU", Resources.InterfaceMTU, profile.Mtu, true);
-                    AddRow(layoutInterface, "ListenPort", Resources.InterfaceListenPort, profile.ListenPort, true);
-                    AddRow(layoutInterface, "Addresses", Resources.InterfaceAddresses, profile.Address);
+                    AddRow(layoutInterface, "AllowedApps", Resources.PeerAllowedApps, profile.AllowedApps, true);
 
                     layoutInterface.RowStyles.Add(new RowStyle(SizeType.Absolute, 10));
                     layoutInterface.RowStyles.Add(new RowStyle(SizeType.Absolute, 35));
@@ -666,7 +663,9 @@ namespace WireSockUI.Forms
                         AutoSizeMode = AutoSizeMode.GrowAndShrink,
                         Dock = DockStyle.Left,
                         Name = "btnActivate",
-                        Text = Resources.ButtonInactive
+                        Text = Resources.ButtonInactive,
+                        FlatStyle = FlatStyle.Flat,
+                        FlatAppearance = { BorderSize = 0 }
                     };
 
                     btnActivate.Click += OnProfileClick;
@@ -678,46 +677,10 @@ namespace WireSockUI.Forms
 
                     OnLayoutPanelResize(layoutInterface, EventArgs.Empty);
 
-                    // Peer Panel
-                    AddRow(layoutPeer, "PublicKey", Resources.PeerPublicKey, profile.PeerKey);
-                    AddRow(layoutPeer, "PresharedKey", Resources.PeerPresharedKey,
-                        !string.IsNullOrWhiteSpace(profile.PresharedKey)
-                            ? Resources.PeerPresharedKeyValue
-                            : string.Empty, true);
-                    AddRow(layoutPeer, "AllowedIPs", Resources.PeerAllowedIPs, TruncateLongString(profile.AllowedIPs));
-                    AddRow(layoutPeer, "Endpoint", Resources.PeerEndpoint, profile.Endpoint);
-                    AddRow(layoutPeer, "PersistentKeepAlive", Resources.PeerPersistentKeepAlive,
-                        profile.PersistentKeepAlive, true);
-
-                    layoutPeer.RowStyles.Add(new RowStyle(SizeType.Absolute, 20));
-
-                    AddRow(layoutPeer, "AllowedApps", Resources.PeerAllowedApps, profile.AllowedApps, true);
-                    AddRow(layoutPeer, "DisallowedApps", Resources.PeerDisallowedApps, profile.DisallowedApps, true);
-                    AddRow(layoutPeer, "DisallowedIPs", Resources.PeerDisallowedIPs,
-                        TruncateLongString(profile.DisallowedIPs), true);
-                    AddRow(layoutPeer, "Socks5Proxy", Resources.PeerSocks5Proxy, profile.Socks5Proxy, true);
-                    AddRow(layoutPeer, "Socks5Username", Resources.PeerSocks5Username, profile.Socks5ProxyUsername,
-                        true);
-                    AddRow(layoutPeer, "Socks5Password", Resources.PeerSocks5Password,
-                        !string.IsNullOrWhiteSpace(profile.Socks5ProxyPassword)
-                            ? Resources.PeerSocks5PasswordValue
-                            : string.Empty, true);
-
-                    if (!string.IsNullOrWhiteSpace(profile.AllowedApps) ||
-                        !string.IsNullOrWhiteSpace(profile.DisallowedApps) ||
-                        !string.IsNullOrWhiteSpace(profile.DisallowedIPs) ||
-                        !string.IsNullOrWhiteSpace(profile.Socks5Proxy))
-                        layoutPeer.RowStyles.Add(new RowStyle(SizeType.Absolute, 20));
-
-                    layoutPeer.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                    gbxPeer.Visible = true;
-
-                    OnLayoutPanelResize(layoutPeer, EventArgs.Empty);
-
                     // Layout state                    
                     AddRow(layoutState, "Handshake", Resources.StateHandshake, "");
                     AddRow(layoutState, "Transfer", Resources.StateTransfer, "");
-                    AddRow(layoutState, "RTT", Resources.StateRTT, "");
+                    AddRow(layoutState, "Latency", "Latency", "");
                     AddRow(layoutState, "Loss", Resources.StateLoss, "");
 
                     layoutState.RowStyles.Add(new RowStyle(SizeType.AutoSize));
@@ -811,7 +774,7 @@ namespace WireSockUI.Forms
                     var textBox = new TextBox
                     {
                         BorderStyle = BorderStyle.None,
-                        BackColor = Color.FromKnownColor(KnownColor.Control),
+                        BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32))))),
                         Dock = DockStyle.Fill,
                         Margin = new Padding(0),
                         Multiline = true,
@@ -840,7 +803,8 @@ namespace WireSockUI.Forms
                     groupedValues.Add(string.Join(",", group));
                 }
 
-                var result = string.Join("\n", groupedValues);
+                var result = string.Join("
+", groupedValues);
 
                 if (values.Length > 20) result += "...";
 
