@@ -803,7 +803,7 @@ namespace WireSockUI.Forms
                     groupedValues.Add(string.Join(",", group));
                 }
 
-                var result = string.Join("
+                var result = string.Join(",
 ", groupedValues);
 
                 if (values.Length > 20) result += "...";
